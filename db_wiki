@@ -1,0 +1,31 @@
+    CREATE TABLE Grupo ( 
+    idGrupo INTEGER PRIMARY KEY, 
+    nomeGrupo VARCHAR(20) NOT NULL, 
+    senhaGrupo VARCHAR(8) NOT NULL, 
+    dataGrupo DATE NOT NULL, 
+    telefoneGrupo VARCHAR(12) NOT NULL);
+
+    CREATE TABLE Jogador (
+    idJogador INTEGER PRIMARY KEY ,
+    nomeJogador VARCHAR(20) NOT NULL,
+    telefoneGrupo VARCHAR NOT NULL,
+    emailJogador VARCHAR(25) NOT NULL,
+    dataJogador DATE NOT NULL,
+    idGrupo INTEGER NOT NULL,
+    gatoJogador INTEGER,
+    pointJogador INTEGER);
+
+    CREATE TABLE Parametro (
+    idParametro INTEGER PRIMARY KEY,
+    nomeParametro VARCHAR(20) NOT NULL,
+    valorParametro INTEGER NOT NULL);
+
+    CREATE TABLE Point (
+    idPoint INTEGER PRIMARY KEY ,
+    dataPoint INTEGER NOT NULL,
+    idJogador1 INTEGER NOT NULL,
+    idJogador2 INTEGER NOT NULL,
+    qtdPoint INTEGER NOT NULL,
+    idGato1 INTEGER,
+    idGato2 INTEGER,
+    idGrupo INTEGER NOT NULL);
