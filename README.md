@@ -1,6 +1,6 @@
 # API Server for game Conta Gato Dominó.
 
-Esse é repositório de código do projeto API Server do jogo CGD.
+Esse é o repositório de código do projeto API Server do jogo CGD.
 
 Este jogo foi desenvolvido para acabar as brigas entre os jogadores de dominó, ele é usado para contar os pontos e os gatos.
 
