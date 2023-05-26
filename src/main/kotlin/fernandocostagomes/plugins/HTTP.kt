@@ -17,10 +17,10 @@ fun Application.configureHTTP() {
         allowHeader("MyCustomHeader")
         anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
     }
-//    routing {
-//        openAPI(path = "openapi")
-//    }
-//    routing {
-//        swaggerUI(path = "openapi")
-//    }
+    routing {
+        openAPI(path = "openapi")
+    }
+    routing {
+        swaggerUI(path = "openapi")
+    }
 }

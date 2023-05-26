@@ -1,5 +1,9 @@
 package fernandocostagomes.plugins
 
+import fernandocostagomes.models.ParameterService
+import fernandocostagomes.models.TeamService
+import fernandocostagomes.routes.configureRoutingParameter
+import fernandocostagomes.routes.configureRoutingTeam
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -11,39 +15,16 @@ import io.ktor.server.routing.*
 fun Application.configureDatabases() {
 
     val dbConnection: Connection = connectToPostgres(embedded = true)
-    val cityService = CityService(dbConnection)
-    routing {
-        // Create city
-        post("/cities") {
-            val city = call.receive<City>()
-            val id = cityService.create(city)
-            call.respond(HttpStatusCode.Created, id)
-        }
-        // Read city
-        get("/cities/{id}") {
-            val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            try {
-                val city = cityService.read(id)
-                call.respond(HttpStatusCode.OK, city)
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.NotFound)
-            }
-        }
-        // Update city
-        put("/cities/{id}") {
-            val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            val user = call.receive<City>()
-            cityService.update(id, user)
-            call.respond(HttpStatusCode.OK)
-        }
-        // Delete city
-        delete("/cities/{id}") {
-            val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            cityService.delete(id)
-            call.respond(HttpStatusCode.OK)
-        }
-    }
+    //val cityService = CityService(dbConnection)
+    val parameterService = ParameterService(dbConnection)
+    val teamService = TeamService(dbConnection)
+
+    configureRoutingParameter(parameterService)
+    configureRoutingTeam(teamService)
 }
+
+
+
 
 /**
  * Makes a connection to a Postgres database.
@@ -67,18 +48,21 @@ fun Application.configureDatabases() {
  * your application shuts down by calling [Connection.close]
  * */
 fun Application.connectToPostgres(embedded: Boolean): Connection {
+
+    val url = "198.50.137.179"
+    val db = "dbcgd"
+    val port = "5432"
+    val user = "postgres"
+    val pwd = "cgdpwd"
+
     Class.forName("org.postgresql.Driver")
     if (embedded) {
-        return DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "root", "")
+        return DriverManager.getConnection("jdbc:postgresql://$url:$port/$db", user, pwd)
     } else {
 //        val url = environment.config.property("postgres.url").getString()
 //        val user = environment.config.property("postgres.user").getString()
 //        val password = environment.config.property("postgres.password").getString()
 
-        val url = "198.50.137.179"
-        val user = "postgres"
-        val password = "cgdpwd"
-
-        return DriverManager.getConnection(url, user, password)
+        return DriverManager.getConnection(url, user, pwd)
     }
 }
