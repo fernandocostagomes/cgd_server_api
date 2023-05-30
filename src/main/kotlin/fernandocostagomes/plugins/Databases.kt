@@ -1,9 +1,7 @@
 package fernandocostagomes.plugins
 
-import fernandocostagomes.models.ParameterService
-import fernandocostagomes.models.TeamService
-import fernandocostagomes.routes.configureRoutingParameter
-import fernandocostagomes.routes.configureRoutingTeam
+import fernandocostagomes.models.*
+import fernandocostagomes.routes.*
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -15,16 +13,19 @@ import io.ktor.server.routing.*
 fun Application.configureDatabases() {
 
     val dbConnection: Connection = connectToPostgres(embedded = true)
-    //val cityService = CityService(dbConnection)
-    val parameterService = ParameterService(dbConnection)
-    val teamService = TeamService(dbConnection)
 
-    configureRoutingParameter(parameterService)
-    configureRoutingTeam(teamService)
+    val parameterCgdService = ParameterCgdService(dbConnection)
+    val teamCgdService = TeamCgdService(dbConnection)
+    val playerCgdService = PlayerCgdService(dbConnection)
+    val matchCgdService = MatchCgdService(dbConnection)
+    val userCgdService = UserCgdService(dbConnection)
+
+    configureRoutingParameter(parameterCgdService)
+    configureRoutingTeam(teamCgdService)
+    configureRoutingPlayer(playerCgdService)
+    configureRoutingMatchCgd(matchCgdService)
+    configureRoutingUserCgd(userCgdService)
 }
-
-
-
 
 /**
  * Makes a connection to a Postgres database.
