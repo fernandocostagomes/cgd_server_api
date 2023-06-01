@@ -2,7 +2,6 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version "$kotlin_version"
     id 'io.ktor.plugin' version "$ktor_version"
     id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version"
-    id 'org.jetbrains.kotlin.jvm' version '1.8.21'
 }
 
 group "fernandocostagomes"
@@ -22,7 +21,7 @@ repositories {
 dependencies {
     implementation "io.ktor:ktor-server-core-jvm:$ktor_version"
     implementation "io.ktor:ktor-server-auth-jvm:$ktor_version"
-    implementation "io.ktor:ktor-server-cio:$ktor_version"
+
     implementation "io.ktor:ktor-server-auth-jwt-jvm:$ktor_version"
     implementation "io.ktor:ktor-server-cors-jvm:$ktor_version"
     implementation "io.ktor:ktor-server-openapi:$ktor_version"
@@ -49,7 +48,4 @@ task fatJar(type: Jar) {
     exclude 'META-INF/*.RSA'
     exclude 'META-INF/*.SF'
     exclude 'META-INF/*.DSA'
-}
-kotlin {
-    jvmToolchain(11)
 }
