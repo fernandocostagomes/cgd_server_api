@@ -1,23 +1,28 @@
 plugins {
+    id 'org.jetbrains.kotlin.jvm' version "$kotlin_version"
+    id 'io.ktor.plugin' version "$ktor_version"
+    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version"
     id 'org.jetbrains.kotlin.jvm' version '1.8.21'
-    id 'io.ktor.plugin' version '2.2.4'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.21'
 }
 
 group "fernandocostagomes"
-version "0.0.1"
-mainClassName = "fernandocostagomes.ApplicationKt"
+version app_version
+mainClassName = "io.ktor.server.netty.EngineMain"
 
 def isDevelopment = project.ext.has("development")
 applicationDefaultJvmArgs = ["-Dio.ktor.development=$isDevelopment"]
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri "https://maven.pkg.jetbrains.space/public/p/ktor/eap"
+    }
 }
 
 dependencies {
     implementation "io.ktor:ktor-server-core-jvm:$ktor_version"
     implementation "io.ktor:ktor-server-auth-jvm:$ktor_version"
+    implementation "io.ktor:ktor-server-cio:$ktor_version"
     implementation "io.ktor:ktor-server-auth-jwt-jvm:$ktor_version"
     implementation "io.ktor:ktor-server-cors-jvm:$ktor_version"
     implementation "io.ktor:ktor-server-openapi:$ktor_version"
@@ -25,10 +30,26 @@ dependencies {
     implementation "io.ktor:ktor-server-content-negotiation-jvm:$ktor_version"
     implementation "io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version"
     implementation "io.ktor:ktor-serialization-gson-jvm:$ktor_version"
-    implementation "org.postgresql:postgresql:$postgres_version"
-    implementation "com.h2database:h2:$h2_version"
     implementation "io.ktor:ktor-server-netty-jvm:$ktor_version"
+    implementation "org.postgresql:postgresql:$postgres_version"
     implementation "ch.qos.logback:logback-classic:$logback_version"
+
     testImplementation "io.ktor:ktor-server-tests-jvm:$ktor_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+task fatJar(type: Jar) {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    exclude 'META-INF/*.RSA'
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+}
+kotlin {
+    jvmToolchain(11)
 }

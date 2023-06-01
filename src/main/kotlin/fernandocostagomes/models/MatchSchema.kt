@@ -131,6 +131,7 @@ class MatchCgdService(private val connection: Connection) {
     // Update a match_cgd
     suspend fun update(id: Int, match_cgd: MatchCgd) = withContext(Dispatchers.IO) {
         val statement = connection.prepareStatement(UPDATE_MATCH_CGD)
+        statement.setInt(0, id)
         statement.setString(1, match_cgd.date_match_cgd)
         statement.setInt(2, match_cgd.winner_1_id_player)
         statement.setInt(3, match_cgd.winner_2_id_player)

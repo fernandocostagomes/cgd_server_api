@@ -57,13 +57,14 @@ fun Application.connectToPostgres(embedded: Boolean): Connection {
     val pwd = "cgdpwd"
 
     Class.forName("org.postgresql.Driver")
-    if (embedded) {
-        return DriverManager.getConnection("jdbc:postgresql://$url:$port/$db", user, pwd)
+
+    return if (embedded) {
+        DriverManager.getConnection("jdbc:postgresql://$url:$port/$db", user, pwd)
     } else {
 //        val url = environment.config.property("postgres.url").getString()
 //        val user = environment.config.property("postgres.user").getString()
 //        val password = environment.config.property("postgres.password").getString()
 
-        return DriverManager.getConnection(url, user, pwd)
+        DriverManager.getConnection(url, user, pwd)
     }
 }

@@ -89,6 +89,7 @@ class ParameterCgdService(private val connection: Connection) {
     // Update a parameter_cgd
     suspend fun update(id: Int, parameter_cgd: ParameterCgd) = withContext(Dispatchers.IO) {
         val statement = connection.prepareStatement(UPDATE_PARAMETER_CDG)
+        statement.setInt(0, id)
         statement.setInt(1, parameter_cgd.code_parameter_cgd)
         statement.setString(1, parameter_cgd.name_parameter_cgd)
         statement.setString(2, parameter_cgd.value_parameter_cgd)

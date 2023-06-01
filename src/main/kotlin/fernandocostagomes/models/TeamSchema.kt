@@ -96,6 +96,7 @@ class TeamCgdService(private val connection: Connection) {
     // Update a team_cgd
     suspend fun update(id: Int, team_cgd: TeamCgd) = withContext(Dispatchers.IO) {
         val statement = connection.prepareStatement(UPDATE_TEAM_CGD)
+        statement.setInt(0, id)
         statement.setString(1, team_cgd.name_team_cgd)
         statement.setString(2, team_cgd.pwd_team_cgd)
         statement.setString(2, team_cgd.date_team_cgd)

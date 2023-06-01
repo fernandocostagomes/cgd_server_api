@@ -106,6 +106,7 @@ class UserCgdService(private val connection: Connection) {
     // Update a user_cgd
     suspend fun update(id: Int, user_cgd: UserCgd) = withContext(Dispatchers.IO) {
         val statement = connection.prepareStatement(UPDATE_USER_CGD)
+        statement.setInt(0, id)
         statement.setString(1, user_cgd.date_user_cgd)
         statement.setString(2, user_cgd.email_user_cgd)
         statement.setString(3, user_cgd.phone_user_cgd)
