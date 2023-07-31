@@ -68,3 +68,11 @@ fun Application.connectToPostgres(embedded: Boolean): Connection {
         DriverManager.getConnection(url, user, pwd)
     }
 }
+
+database {
+        type = "sqlite"
+        url = "jdbc:sqlite:my-database.sqlite"
+        user = ""
+        password = ""
+    }
+
