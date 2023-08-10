@@ -1,17 +1,14 @@
 package fernandocostagomes.plugins
 
-import fernandocostagomes.models.*
 import fernandocostagomes.models.vmais.AddressService
 import fernandocostagomes.models.vmais.ParameterService
 import fernandocostagomes.models.vmais.UserService
-import fernandocostagomes.routes.*
-import io.ktor.http.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import kotlinx.coroutines.*
-import java.sql.*
+import fernandocostagomes.routes.configureRoutingAddress
+import fernandocostagomes.routes.configureRoutingParameter
+import fernandocostagomes.routes.configureRoutingUser
 import io.ktor.server.application.*
-import io.ktor.server.routing.*
+import java.sql.Connection
+import java.sql.DriverManager
 
 fun Application.configureDatabases() {
 
@@ -32,8 +29,8 @@ fun Application.configureDatabases() {
  * In order to connect to your running Postgres process,
  * please specify the following parameters in your configuration file:
  * - postgres.url -- Url of your running database process.
- * - postgres.user -- Username for database connection
- * - postgres.password -- Password for database connection
+ * - postgres.User -- Username for database connection
+ * - postgres.Password -- Password for database connection
  *
  * If you don't have a database process running yet, you may need to [download]((https://www.postgresql.org/download/))
  * and install Postgres and follow the instructions [here](https://postgresapp.com/).
@@ -41,18 +38,18 @@ fun Application.configureDatabases() {
  * user and password values.
  *
  *
- * @param embedded -- if [true] defaults to an embedded database for tests that runs locally in the same process.
+ * @param embedded -- if TRUE defaults to an embedded database for tests that runs locally in the same process.
  * In this case you don't have to provide any parameters in configuration file, and you don't have to run a process.
  *
  * @return [Connection] that represent connection to the database. Please, don't forget to close this connection when
  * your application shuts down by calling [Connection.close]
  * */
-fun Application.connectToPostgres(embedded: Boolean): Connection {
+fun connectToPostgres(embedded: Boolean): Connection {
 
     val url = "15.235.33.242"
-    val db = "dbcgd"
+    val db = "dbvmaispostgres"
     val port = "5432"
-    val user = "vmaispostgres"
+    val user = "uservmaispostgres"
     val pwd = "senhavmaispostgres"
 
     Class.forName("org.postgresql.Driver")
