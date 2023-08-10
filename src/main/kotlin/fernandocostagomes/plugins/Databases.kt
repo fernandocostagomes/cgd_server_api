@@ -1,6 +1,9 @@
 package fernandocostagomes.plugins
 
 import fernandocostagomes.models.*
+import fernandocostagomes.models.vmais.AddressService
+import fernandocostagomes.models.vmais.ParameterService
+import fernandocostagomes.models.vmais.UserService
 import fernandocostagomes.routes.*
 import io.ktor.http.*
 import io.ktor.server.request.*
@@ -14,17 +17,13 @@ fun Application.configureDatabases() {
 
     val dbConnection: Connection = connectToPostgres(embedded = true)
 
-    val parameterCgdService = ParameterCgdService(dbConnection)
-    val teamCgdService = TeamCgdService(dbConnection)
-    val playerCgdService = PlayerCgdService(dbConnection)
-    val matchCgdService = MatchCgdService(dbConnection)
-    val userCgdService = UserCgdService(dbConnection)
+    val parameterService = ParameterService(dbConnection)
+    val userService = UserService(dbConnection)
+    val addressService = AddressService(dbConnection)
 
-    configureRoutingParameter(parameterCgdService)
-    configureRoutingTeam(teamCgdService)
-    configureRoutingPlayer(playerCgdService)
-    configureRoutingMatchCgd(matchCgdService)
-    configureRoutingUserCgd(userCgdService)
+    configureRoutingParameter(parameterService)
+    configureRoutingUser(userService)
+    configureRoutingAddress(addressService)
 }
 
 /**
@@ -50,11 +49,11 @@ fun Application.configureDatabases() {
  * */
 fun Application.connectToPostgres(embedded: Boolean): Connection {
 
-    val url = "198.50.137.179"
+    val url = "15.235.33.242"
     val db = "dbcgd"
     val port = "5432"
-    val user = "postgres"
-    val pwd = "cgdpwd"
+    val user = "vmaispostgres"
+    val pwd = "senhavmaispostgres"
 
     Class.forName("org.postgresql.Driver")
 
@@ -68,11 +67,4 @@ fun Application.connectToPostgres(embedded: Boolean): Connection {
         DriverManager.getConnection(url, user, pwd)
     }
 }
-
-database {
-        type = "sqlite"
-        url = "jdbc:sqlite:my-database.sqlite"
-        user = ""
-        password = ""
-    }
 
